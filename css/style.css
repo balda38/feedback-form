@@ -1,0 +1,143 @@
+@import url('https://fonts.googleapis.com/css?family=EB+Garamond&display=swap');
+
+*{
+    font-family: 'EB+Garamond'; 
+}
+
+body{
+    margin: 0;
+}
+
+.header{
+    height: 5%;
+    width: 100%;
+    background-color: #2c3e50;
+    border-bottom: 1px solid #E8E8E8;
+}
+.header-title{
+    position: relative;
+    top: 15%;
+    color: #FFFFFF;
+    font-size: 20;
+    text-align: center;   
+}
+
+.contacts{
+    height: 17%;
+    width: 70%;
+    margin-left: 15%;
+    margin-right: 15%;
+    margin-bottom: 2%;
+    font-size: 24px;
+}
+.contacts-title{
+    color: #F4A460;
+    font-size: 50;
+    font-weight: bold;    
+}
+
+.address{
+    display: block;
+    float: left; 
+    clear: both;
+}
+
+.e-contacts{
+    display: block;
+    float: right;
+}
+
+.messages-frame{
+    width: 100%;
+    border-bottom: 1px solid #E8E8E8;    
+    margin-bottom: 1%;
+    border-top: 1px solid #E8E8E8;    
+    margin-top: 1%;
+}
+.messages-frame-title{
+    color: #F4A460;
+    font-size: 30;    
+    font-weight: bold;
+    text-align: center;
+    margin: 7px;
+}
+.messages{
+    max-height: 35%;
+    overflow: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+.messages::-webkit-scrollbar {
+    width: 0px;
+}
+
+.message-block{
+    width: 60%;
+	box-sizing: border-box;
+	display: block;
+	word-wrap: break-word; 
+    float: left;
+    margin-top: 20px;
+    margin-left: 20%; 
+    margin-bottom: 20px;
+    padding: 5px 10px;
+    background: #FFFAF0; 
+    background: linear-gradient(to top, #FFFFF0, #FFFAF0);
+	border: 1px solid #A0A9B1;
+	border-radius: 6px;
+    clear: both;
+}	
+.message-author{
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+}
+.message-author-email{
+    display: inline-block;
+    font-size: 16px;
+    font-weight: normal;
+    color: #828282;
+}
+.message{
+    margin-top: 15px;
+    font-size: 14;
+    text-align: center;
+}
+
+.form{
+    height: 25%;
+    width: 50%;
+    margin-left: 10%;
+}
+.form-title{
+    color: #F4A460;
+    font-size: 20;
+    font-weight: bold;
+    margin: 7px;
+}
+
+.form-input{
+    height: 30px;
+    max-width: 100%;
+	border-radius: 10px;
+    border: 1px solid #A0A9B1;
+    margin: 7px;
+    padding: .5em;
+    font-size: 16;
+}
+
+.submit-button{
+    box-sizing: content-box;  
+    color: #000000;
+    margin: 7px;
+    padding: .5em;
+    font-size: 16;
+	border: 1px solid #A0A9B1;
+	border-radius: 10px;
+	background: #E8E8E8;
+    transition: 0.2s;
+}
+.submit-button:hover{ 
+	background: #CFCFCF; 
+    cursor: pointer;
+}
