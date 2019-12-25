@@ -1,9 +1,13 @@
 @import url('https://fonts.googleapis.com/css?family=EB+Garamond&display=swap');
 
+@keyframes         fade-in-contacts {   0% { opacity: 0; top: 10% }   100% { opacity: 1; top: 5% }   }
+@keyframes         fade-in-messages-frame {   0% { opacity: 0; top: 23% }   100% { opacity: 1; top: 18% }   }
+@keyframes         fade-in-form {   0% { opacity: 0; top: 69% }   100% { opacity: 1; top: 64% }   }
+
 *{
     font-family: 'EB+Garamond'; 
 }
-
+ 
 body{
     margin: 0;
 }
@@ -22,18 +26,27 @@ body{
     text-align: center;   
 }
 
+.contacts-container{    
+    margin-left: 15%;  
+}
+
 .contacts{
     height: 17%;
     width: 70%;
-    margin-left: 15%;
     margin-right: 15%;
-    margin-bottom: 2%;
-    font-size: 24px;
+    margin-bottom: 2%;        
+    position: absolute;
+    transition: 1.5s;
+    animation: fade-in-contacts 1.5s linear;
+    animation-fill-mode: both;
 }
 .contacts-title{
     color: #F4A460;
     font-size: 50;
     font-weight: bold;    
+}
+.contacts-info{
+    font-size: 24;
 }
 
 .address{
@@ -48,11 +61,17 @@ body{
 }
 
 .messages-frame{
-    width: 100%;
-    border-bottom: 1px solid #E8E8E8;    
-    margin-bottom: 1%;
-    border-top: 1px solid #E8E8E8;    
+    width: 100%;   
+    position: relative;
+    border-bottom: 1px solid #E8E8E8;  
+    border-top: 1px solid #E8E8E8;     
+    margin-bottom: 1%;     
     margin-top: 1%;
+    transition: 1.5s;
+    transition-delay: 1.5s;
+    animation: fade-in-messages-frame 1.5s linear;
+    animation-delay: 2s;
+    animation-fill-mode: both;    
 }
 .messages-frame-title{
     color: #F4A460;
@@ -62,7 +81,7 @@ body{
     margin: 7px;
 }
 .messages{
-    max-height: 35%;
+    max-height: 32%;
     overflow: auto;
     -ms-overflow-style: none;
     scrollbar-width: none;
@@ -104,10 +123,19 @@ body{
     text-align: center;
 }
 
+.form-container{
+    margin-left:10%
+}
+
 .form{
     height: 25%;
     width: 50%;
-    margin-left: 10%;
+    position: absolute;
+    transition: 1.5s;
+    transition-delay: 3s;
+    animation: fade-in-form 1.5s linear;
+    animation-delay: 4s;
+    animation-fill-mode: both;
 }
 .form-title{
     color: #F4A460;
@@ -118,12 +146,22 @@ body{
 
 .form-input{
     height: 30px;
-    max-width: 100%;
 	border-radius: 10px;
     border: 1px solid #A0A9B1;
     margin: 7px;
     padding: .5em;
     font-size: 16;
+}
+#name{
+    width: 47%;
+}
+#email{
+    width: 48%;
+}
+#new_message{
+    width: 97%; 
+    height: 100px; 
+    max-width: 97%;
 }
 
 .submit-button{
