@@ -107,15 +107,21 @@ body{
     clear: both;
 }	
 .message-author{
-    font-size: 18px;
+    font-size: 18;
     font-weight: bold;
     text-align: center;
 }
 .message-author-email{
     display: inline-block;
-    font-size: 16px;
+    font-size: 16;
     font-weight: normal;
     color: #828282;
+}
+.message-date{
+    margin-top: 5px;
+    font-size: 12;
+    text-align: center;
+    color: #6C7B8B;
 }
 .message{
     margin-top: 15px;
