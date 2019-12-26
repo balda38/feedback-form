@@ -3,7 +3,11 @@
     <head>
         <title>Форма обратной связи</title>
         <meta charset="utf-8">
+
         <link rel="stylesheet" href="css/style.css">
+
+        <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+        <script src="js/sendForm.js"></script> 
     </head>
 
     <body>  
@@ -31,15 +35,15 @@
             </div>
         </div>
         
-        <div id="messages" class="messages-frame">
+        <div class="messages-frame">
             <div class="messages-frame-title">
                 Нам пишут:
             </div>
-            <div class="messages">
+            <div id="messages" class="messages">
                 <?php
                     require_once "connection.php";
 
-                    $stmt = $pdo->query('SELECT * FROM messages');
+                    $stmt = $pdo->query('SELECT * FROM messages ORDER BY id DESC');
                     $months = [" январь ", " февраль ", " март ", " апрель ", " май ", " июнь ", " июль ", " август ", " сентябрь ", " октябрь ", " ноябрь ", " декабрь "];
                     
                     while($row = $stmt->fetch()){
@@ -57,19 +61,21 @@
                         }                           
                         $rusDate = str_replace($dateComponents[1], $months[intval($dateComponents[1]) - 1], $numericDate);                        
 
-                        echo "<div class='message-block'>
-                            <div class='message-author'>".
-                                $row['name']." ".
-                                "<div class='message-author-email'>".
-                                $row['email'].
+                        echo "<div class='message-block-container'>
+                            <div class='message-block'>
+                                <div class='message-author'>".
+                                    $row['name']." ".
+                                    "<div class='message-author-email'>".
+                                    $row['email'].
+                                    "</div>
+                                </div>      
+                                <div class='message-date'>".
+                                    $rusDate." г.".
+                                "</div>            
+                                <div class='message'>".  
+                                    $row['message'].
                                 "</div>
-                            </div>      
-                            <div class='message-date'>".
-                                $rusDate." г.".
-                            "</div>            
-                            <div class='message'>".  
-                                $row['message'].
-                            "</div>
+                            </div>
                         </div>";
                     }                    
                 ?>                
@@ -77,14 +83,14 @@
         </div>
         
         <div class="form-container">
-            <form class="form" action="php/send_message.php" method="POST">
+            <form class="form" id="send_message_form" action="" method="post">
                 <div class="form-title">
                     Напишите и Вы!
                 </div>
-                <input type="text" name="user_name" required id="name" class="form-input" placeholder="Введите Ваше имя..."/>
-                <input type="email" name="email" required pattern="[a-zA-Z0-9]{3,}@[a-zA-Z]{3,}.[a-zA-Z]{2,}" id="email" class="form-input" placeholder="Введите Ваш email..."/>                
-                <textarea type="text" name="message" required id="new_message" class="form-input" placeholder="Введите Ваше сообщение..."></textarea>
-                <input type="submit" class="submit-button"/>            
+                <input type="text" name="user_name" required maxlength="50" id="name" class="form-input" placeholder="Введите Ваше имя..."/>
+                <input type="email" name="email" required maxlength="50" id="email" class="form-input" placeholder="Введите Ваш email..."/>                
+                <textarea type="text" name="message" required maxlength="1000" id="new_message" class="form-input" placeholder="Введите Ваше сообщение (не более 1000 символов)..."></textarea>
+                <input type="submit" id="submit_button" class="submit-button"/>            
             </form>
         </div>
     </body>

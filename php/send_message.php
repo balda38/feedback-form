@@ -1,42 +1,32 @@
 <?php
     /*
      * Скрипт для отправки сообщения из формы на сервер посредством PDO.
+     * Результат работы запроса вернет значение 0 или 1:
+     *      0 - данные введены корректно;
+     *      1 - данные введены некорректно.
+     * Так же отправка JSON-файла с сообщением и указателем правильности ввода данных на AJAX-контроллер
     **/
 
     require_once "../connection.php";
+    
+    $messageParams = array(
+        'name' => $_POST["user_name"],
+        'email' => $_POST["email"],
+        'message' => $_POST["message"],
+        'date' => date("Y-m-d"),
+    );
 
-   /*  $host = '127.0.0.1'; // адрес сервера 
-    $database = 'test_db'; // имя базы данных
-    $user = 'root'; // имя пользователя
-    $password = '123root321'; // пароль
+    $stmt = $pdo->prepare('CALL check_inserted_data(:name, :email, :message, :date, @proc_out)'); 
+    
+    $stmt->execute($messageParams);    
 
-    $dsn = "mysql:host=$host;dbname=$database";
-    $opt = [
-        PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-        PDO::ATTR_EMULATE_PREPARES   => false,
-    ];
-    $pdo = new PDO($dsn, $user, $password, $opt); */
+    $stmt1 = $pdo->query('SELECT @proc_out as wrong_data'); 
+    $row = $stmt1->fetch();
 
-    /* $data = [
-        'name' => $_POST[user_name],
-        'email' => $_POST[email],
-        'message' => $_POST[message],
-    ]; */
-    /* $stmt = "INSERT INTO messages (name, email, message) VALUES (:name, :email, :message)";
-    $stmt->bindParam(':name', $_POST[user_name]);
-    $stmt->bindParam(':email', $_POST[email]);
-    $stmt->bindParam(':message', $_POST[message]);
-    $stmt->execute(); */
+    $result = array(
+        'messageParams' => $messageParams,
+        'wrongData' => $row['wrong_data'],
+    ); 
 
-    $statement = $pdo->prepare('INSERT INTO messages (name, email, message)
-    VALUES (:fname, :sname, :age)');
-
-    $statement->execute([
-        'fname' => $_POST["user_name"],
-        'sname' => $_POST["email"],
-        'age' => $_POST["message"],
-    ]);
-
-    //$pdo->exec('INSERT INTO messages (name, email, message) values ("{$_POST[user_name]}", "{$_POST[email]}", "{$_POST[message]}"');
+    echo json_encode($result);
 ?>
