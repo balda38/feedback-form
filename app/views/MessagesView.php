@@ -50,7 +50,7 @@
         <div class="form-title">
             Напишите и Вы!
         </div>
-        <input type="text" name="user_name" required maxlength="50" id="name" class="form-input" placeholder="Введите Ваше имя..."/>
+        <input type="text" name="user_name" required maxlength="50" id="name" class="form-input" placeholder="Введите Ваше ФИО..."/>
         <input type="email" name="email" required maxlength="50" id="email" class="form-input" placeholder="Введите Ваш email..."/>                
         <textarea type="text" name="message" required maxlength="1000" id="new_message" class="form-input" placeholder="Введите Ваше сообщение (не более 1000 символов)..."></textarea>
         <input type="submit" id="submit_button" class="submit-button"/>            
