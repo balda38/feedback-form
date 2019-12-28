@@ -1,5 +1,4 @@
 'use strict';
-
 	/*
      * Скрипт для динамического обновления списка сообщений посредством AJAX.
     **/
@@ -7,7 +6,7 @@
 $( document ).ready(function() {
     $("#submit_button").click(
 		function(){
-			sendAjaxForm('messages', 'send_message_form', 'php/send_message.php');
+			sendAjaxForm('messages', 'send_message_form', 'ajax_redirect.php/app/Messages/insertMessage');
 			return false; 
 		}
 	);
@@ -15,12 +14,12 @@ $( document ).ready(function() {
 
 function sendAjaxForm(messages, send_message_form, url) {
     $.ajax({
-        url:     url, //url страницы (action_ajax_form.php)
-        type:     "POST", //метод отправки
-        dataType: "html", //формат данных
-		data: $("#"+send_message_form).serialize(),  // Сеарилизуем объект
+        url: url, 
+        type: "POST", 
+        dataType: "text", 
+		data: $("#"+send_message_form).serialize(),  
 		
-        success: function(response) { //Данные отправлены успешно
+		success: function(response) { 
 			let result = $.parseJSON(response);
 
 			let months = [" январь ", " февраль ", " март ", " апрель ", " май ", " июнь ", " июль ", " август ", " сентябрь ", " октябрь ", " ноябрь ", " декабрь "];			
@@ -80,7 +79,7 @@ function sendAjaxForm(messages, send_message_form, url) {
 				window.alert("Данные введены некорректно.");
 			}        	
     	},
-    	error: function(response) { // Данные не отправлены
+    	error: function(response) { 
             $('#messages').html('Ошибка. Данные не отправлены.');
     	}
  	});
