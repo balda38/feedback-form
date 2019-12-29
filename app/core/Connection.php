@@ -23,7 +23,11 @@
                 PDO::ATTR_EMULATE_PREPARES   => false,
             ];
 
-            $pdo = new PDO($dsn, $user, $password, $opt); 
+            try {
+                $pdo = new PDO($dsn, $user, $password, $opt);
+            } catch (PDOException $e) {
+                echo 'Не удалось подключиться к серверу: ' . $e->getMessage();
+            }
 
             return $pdo;
         }

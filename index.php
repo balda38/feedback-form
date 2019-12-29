@@ -1,3 +1,7 @@
+<?php
+    header("Content-Security-Policy: default-src 'self' *googleapis.com");
+?>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -22,14 +26,14 @@
                 </div>
                 <div class="contacts-info">
                     <div class="address">
-                        <img src="img/location.png" width="24" height="24"><b> Архангельск</b><br>                
+                        <img src="img/location.png"><b> Архангельск</b><br>                
                         пр. Троицкий 111, 11 этаж<br>
                         график работы: будни с 11:11 до 23:23
                     </div>
                     <div class="e-contacts">
-                        <b><img src="img/email.png" width="24" height="24"> E-mail: </b> troickiy111@111.ru<br>
-                        <b><img src="img/vk.png" width="24" height="24"> VK: </b> vk.com/troickiy111<br>
-                        <b><img src="img/viber.png" width="24" height="24"> Viber/WhatsApp: </b> 8 (111) 111-11-11<br>
+                        <img src="img/email.png"><b> E-mail: </b> troickiy111@111.ru<br>
+                        <img src="img/vk.png"><b> VK: </b> vk.com/troickiy111<br>
+                        <img src="img/viber.png"><b> Viber/WhatsApp: </b> 8 (111) 111-11-11<br>
                     </div>
                 </div>
             </div>

@@ -3,7 +3,8 @@
      * Класс MessagesModel отвечающий за взаимодействие с данными из табыли messages БД.
      * Наследуется от базового класса Model.
      *      Метод getData() отвечает за получение данных от сервера.
-     *      Метод insertData() отвечает за отправку данных на сервер.
+     *      Метод insertData() отвечает за отправку данных на сервер;
+     *      выходной параметр @proc_out необходим для определения корректности введенных данных.
     **/
 
     class MessagesModel extends Model
@@ -29,9 +30,9 @@
             $pdo = $this->conn->connect();
 
             $messageParams = array(
-                'name' => $_POST["user_name"],
-                'email' => $_POST["email"],
-                'message' => $_POST["message"],
+                'name' => htmlspecialchars($_POST["user_name"]),
+                'email' => htmlspecialchars($_POST["email"]),
+                'message' => htmlspecialchars($_POST["message"]),
                 'date' => date("Y-m-d"),
             );
         
