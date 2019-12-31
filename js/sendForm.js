@@ -1,90 +1,108 @@
 'use strict';
-	/*
-     * Скрипт для динамического обновления списка сообщений посредством AJAX.
-	 * 		При получении данных, если параметр wrondData равен 0, 
-	 * 		значит данные введены правильно и список будет обновлен.
-	 * 		При получении данных, если параметр wrongData равен 1,
-	 * 		значит данные введены неправильно и об этом будет выведено сообщение.
-    **/
+    /* Скрипт для динамического обновления списка сообщений посредством AJAX.    
+	При получении данных, если параметр correctData равен true, 
+	значит данные введены правильно и список будет обновлен.
+	При получении данных, если параметр correctData равен false,
+	значит данные введены неправильно и об этом будет выведено сообщение.
+    */
 
-$( document ).ready(function() {
-    $("#submit_button").click(
-		function(){
-			sendAjaxForm('messages', 'send_message_form', 'ajax_redirect.php/app/Messages/insertMessage');
-			return false; 
-		}
-	);
+var user_name;
+var user_email;
+var user_message;
+var date = new Date();
+
+$( document ).ready(function () {
+  $('#submit_button').click(
+    function(){
+      user_name = document.getElementById('name').value;
+	  user_email = document.getElementById('email').value;
+	  user_message = document.getElementById('new_message').value;				
+	
+	  var dateOptions = {
+	    year: 'numeric',
+		month: 'long',
+		day: 'numeric'
+	  };
+	
+	  date = date.toLocaleString('ru', dateOptions);
+
+	  sendAjaxForm('messages', 'send_message_form', 'app/Messages/insertMessage');
+	  return false; 
+	}
+  );
 });
 
 function sendAjaxForm(messages, send_message_form, url) {
-    $.ajax({
-        url: url, 
-        type: "POST", 
-        dataType: "text", 
-		data: $("#"+send_message_form).serialize(),  
-		
-		success: function(response) { 
-			let result = $.parseJSON(response);
+  $.ajax({
+    url: url, 
+	type: 'POST', 
+	dataType: 'text', 
+	data: $('#'+send_message_form).serialize(),  
+	
+	success: function (response) { 
+	  let result = $.parseJSON(response);
 
-			let months = [" январь ", " февраль ", " март ", " апрель ", " май ", " июнь ", " июль ", " август ", " сентябрь ", " октябрь ", " ноябрь ", " декабрь "];			
-			let dateComponents = result.messageParams['date'].split("-");
-			let buff = dateComponents[0];
-			dateComponents[0] = dateComponents[2];
-			dateComponents[2] = buff;   
-			let numericDate = "";
-			dateComponents.forEach(
-				element => numericDate += element
-			);				                   
-			let rusDate = numericDate.replace(dateComponents[1], months[parseInt(dateComponents[1]) - 1]);
-			
-			if(result.wrongData != 1){
-				let msg_block_container = document.createElement('div');
-				msg_block_container.className = "message-block-container";
+	  if (result.correctData) {								
+		updateMessagesList();
+		zeroingFields();
+	  }
+	  else {
+		window.alert('Данные введены некорректно.');
+	  }        	
+	},
+	error: function (response) { 
+	  window.alert('Ошибка. Данные не отправлены.');
+	}
+  });
+};
 
-				let msg_block = document.createElement('div');
-				msg_block.className = "message-block";
+function updateMessagesList() {
+  let msg_block_container = document.createElement('div');
+  msg_block_container.className = 'message-block-container';
 
-				let msg_author = document.createElement('div');
-				msg_author.className = "message-author";
-				msg_author.innerHTML = result.messageParams['name'] + " ";
+  let msg_block = document.createElement('div');
+  msg_block.className = 'message-block';
 
-				let msg_author_email = document.createElement('div');
-				msg_author_email.className = "message-author-email";
-				msg_author_email.innerHTML = result.messageParams['email'];
+  let msg_author = document.createElement('div');
+  msg_author.className = 'message-author';
+  msg_author.innerHTML = user_name + ' ';
 
-				let msg_date = document.createElement('div');
-				msg_date.className = "message-date";
-				msg_date.innerHTML = rusDate + " г.";
+  let msg_author_email = document.createElement('div');
+  msg_author_email.className = 'message-author-email';
+  msg_author_email.innerHTML = user_email;
 
-				let msg_text = document.createElement('div');
-				msg_text.className = "message";
-				msg_text.innerHTML = result.messageParams['message'];
+  let msg_date = document.createElement('div');
+  msg_date.className = 'message-date';
+  msg_date.innerHTML = date;
 
-				msg_author.append(msg_author_email);
-				msg_block.append(msg_author);
-				msg_block.append(msg_date);
-				msg_block.append(msg_text);
-				msg_block_container.append(msg_block);
-				$('#messages').prepend(msg_block_container);
-				
-				msg_block_container.style.maxHeight = "0px";
-				msg_block_container.style.opacity = 0;
-				msg_block_container.style.transition = "5s";
-				setTimeout(function(){
-					msg_block_container.style.maxHeight = "500px";
-					msg_block_container.style.opacity = 1;
-				}, 100);				
-				
-				document.getElementById('name').value = "";
-				document.getElementById('email').value = "";
-				document.getElementById('new_message').value = "";
-			}
-			else{
-				window.alert("Данные введены некорректно.");
-			}        	
-    	},
-    	error: function(response) { 
-            window.alert('Ошибка. Данные не отправлены.');
-    	}
- 	});
-}
+  let msg_text = document.createElement('div');
+  msg_text.className = 'message';
+  msg_text.innerHTML = user_message;
+
+  msg_author.append(msg_author_email);
+  msg_block.append(msg_author);
+  msg_block.append(msg_date);
+  msg_block.append(msg_text);
+  msg_block_container.append(msg_block);
+  $('#messages').prepend(msg_block_container);
+
+  msg_block_container.style.maxHeight = '0px';
+  msg_block_container.style.opacity = 0;
+  msg_block_container.style.transition = '5s';
+
+  setTimeout(function () {
+	msg_block_container.style.maxHeight = '500px';
+	msg_block_container.style.opacity = 1;
+  }, 100);
+};
+
+function zeroingFields() {
+  document.getElementById('name').value = '';
+  document.getElementById('email').value = '';
+  document.getElementById('new_message').value = '';
+
+  user_name = null;
+  user_email = null;
+  user_message = null;
+  date = null;
+};

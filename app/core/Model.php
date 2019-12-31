@@ -1,26 +1,29 @@
 <?php
-	/*
-	 * Базовый класс отвечающий за взаимодействие с данными на сервере.
-	**/
 
-	class Model
-	{
-		private $conn;
+/** 
+ * Базовый класс отвечающий за взаимодействие с данными на сервере.
+ */
+class Model
+{
+    private $__conn;
 
-		function __construct()
-        {
-            $this->conn = new Connection();
-        }
+    /**
+     * Базовый метод для получения данных.
+     * 
+     * @return void
+     */
+    function getData()
+    {
+        
+    }
 
-		function getData()
-		{
-			
-		}
+    /**
+     * Базовый метод для вставки данных.
+     * 
+     * @return void
+     */
+    function insertData()
+    {
 
-		function insertData()
-		{
-
-		}
-	}
-
-?>
+    }
+}
