@@ -1,57 +1,68 @@
 <?php
-    /*
-     * Класс MessagesModel отвечающий за взаимодействие с данными из табыли messages БД.
-     * Наследуется от базового класса Model.
-     *      Метод getData() отвечает за получение данных от сервера.
-     *      Метод insertData() отвечает за отправку данных на сервер;
-     *      выходной параметр @proc_out необходим для определения корректности введенных данных.
-    **/
 
-    class MessagesModel extends Model
+/** 
+ * Класс, отвечающий за взаимодействие с данными из таблицы messages БД.
+ * Наследуется от базового класса Model.
+ */
+class MessagesModel extends Model
+{
+    /**
+     * При создании нового объекта класса устанавливает новое подключение.
+     * 
+     * @return void
+     */
+    function __construct()
     {
-        function __construct()
-        {
-            $this->conn = new Connection();
-        }
-
-        function getData()
-        {
-            $pdo = $this->conn->connect();
-
-            $stmt = $pdo->query('SELECT * FROM messages ORDER BY id DESC');    
-            
-            $pdo = $this->conn->closeConnection();
-            
-            return $stmt;                   
-        }
-
-        function insertData()
-        {
-            $pdo = $this->conn->connect();
-
-            $messageParams = array(
-                'name' => htmlspecialchars($_POST["user_name"]),
-                'email' => htmlspecialchars($_POST["email"]),
-                'message' => htmlspecialchars($_POST["message"]),
-                'date' => date("Y-m-d"),
-            );
-        
-            $stmt = $pdo->prepare('CALL check_inserted_data(:name, :email, :message, :date, @proc_out)'); 
-            
-            $stmt->execute($messageParams);    
-        
-            $stmt1 = $pdo->query('SELECT @proc_out as wrong_data'); 
-            $row = $stmt1->fetch();
-        
-            $result = array(
-                'messageParams' => $messageParams,
-                'wrongData' => $row['wrong_data'],
-            );        
-            
-            $pdo = $this->conn->closeConnection();
-
-            return $result;
-        }
+        $this->__conn = new Connection();
     }
 
-?>
+    /**
+     * Метод, получающий данные из БД посредством SQL-запроса.
+     * 
+     * @return PDOStatement - результат выборки по запросу.
+     */
+    function getData()
+    {
+        $pdo = $this->__conn->connect();
+
+        $stmt = $pdo->query('SELECT * FROM messages ORDER BY id DESC');    
+        
+        $pdo = $this->__conn->closeConnection();
+        
+        return $stmt;                   
+    }
+
+    /**
+     * Метод для вставки данных из полей формы в БД посредством SQL-запроса
+     * 
+     * @return bool - указатель правильности введенных данных.
+     */
+    function insertData()
+    {
+        $pdo = $this->__conn->connect();
+
+        $messageParams = array(
+            'name' => htmlspecialchars($_POST["user_name"]),
+            'email' => htmlspecialchars($_POST["email"]),
+            'message' => htmlspecialchars($_POST["message"]),
+            'date' => date("Y-m-d"),
+        );
+    
+        $stmt = $pdo->prepare(
+            'CALL check_inserted_data(:name, :email, :message, :date, @proc_out)'
+        ); 
+        
+        $stmt->execute($messageParams);    
+    
+        $stmt1 = $pdo->query('SELECT @proc_out as correct_data'); 
+        $row = $stmt1->fetch();     
+
+        $json = array(
+            'correctData' => $row['correct_data']
+        );
+        
+        $pdo = $this->__conn->closeConnection();
+
+        return json_encode($json);
+    }
+}
