@@ -1,19 +1,23 @@
 <?php
 
+namespace App\Models;
+use App\Core\Model as BaseModel;
+use App\Core\Connection;
+
 /** 
  * Класс, отвечающий за взаимодействие с данными из таблицы messages БД.
  * Наследуется от базового класса Model.
  */
-class MessagesModel extends Model
+class MessagesModel extends BaseModel
 {
     /**
      * При создании нового объекта класса устанавливает новое подключение.
      * 
      * @return void
      */
-    function __construct()
+    public function __construct()
     {
-        $this->__conn = new Connection();
+        $this->conn = new Connection();
     }
 
     /**
@@ -21,13 +25,13 @@ class MessagesModel extends Model
      * 
      * @return PDOStatement - результат выборки по запросу.
      */
-    function getData()
+    public function getData()
     {
-        $pdo = $this->__conn->connect();
+        $pdo = $this->conn->connect();
 
         $stmt = $pdo->query('SELECT * FROM messages ORDER BY id DESC');    
         
-        $pdo = $this->__conn->closeConnection();
+        $pdo = $this->conn->closeConnection();
         
         return $stmt;                   
     }
@@ -37,9 +41,9 @@ class MessagesModel extends Model
      * 
      * @return bool - указатель правильности введенных данных.
      */
-    function insertData()
+    public function insertData()
     {
-        $pdo = $this->__conn->connect();
+        $pdo = $this->conn->connect();
 
         $messageParams = array(
             'name' => htmlspecialchars($_POST["user_name"]),
@@ -56,13 +60,9 @@ class MessagesModel extends Model
     
         $stmt1 = $pdo->query('SELECT @proc_out as correct_data'); 
         $row = $stmt1->fetch();     
-
-        $json = array(
-            'correctData' => $row['correct_data']
-        );
         
-        $pdo = $this->__conn->closeConnection();
+        $pdo = $this->conn->closeConnection();
 
-        return json_encode($json);
+        return $row['correct_data'];
     }
 }

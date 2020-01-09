@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Core;
+
 /** 
  * Класс-маршрутизатор для определения запрашиваемой страницы.
  * Цепляет классы контроллеров и моделей.
@@ -12,7 +14,7 @@ class Route
      * 
      * @return void
      */
-    static function start()
+    public function __construct()
     {
         $controller_name = 'Messages';
         $action_name = 'getMessagesList';
@@ -45,7 +47,8 @@ class Route
             Route::errorPage404();
         }
 
-        $controller = new $controller_name;
+        $controller_name = '\app\controllers\\'.$controller_name;
+        $controller = new $controller_name();
         $action = $action_name;
         
         if (method_exists($controller, $action)) {
@@ -61,7 +64,7 @@ class Route
      * 
      * @return void
      */
-    static function errorPage404()
+    private static function errorPage404()
     {
         $host = 'http://'.$_SERVER['HTTP_HOST'].'/';
         header('HTTP/1.1 404 Not Found');

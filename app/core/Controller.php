@@ -1,10 +1,12 @@
 <?php
 
+namespace App\Core;
+
 /** 
  * Базовый класс отвечающий за взаимодействие с моделью и отрисовку вьюшки.
  */
 class Controller
 {
-    private $__model;
-    private $__view;
+    protected $model;
+    protected $view;
 }

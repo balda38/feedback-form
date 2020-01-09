@@ -1,11 +1,16 @@
 <?php
 
+namespace App\Controllers;
+use App\Core\Controller as BaseController;
+use App\Models\MessagesModel;
+use App\Core\View;
+
 /** 
  * Класс, отвечающий за взаимодействие с моделью и 
  * отрисовывающий вьюшку с данными, полученными из модели.
  * Наследуется от базового класса Controller.
  */
-class MessagesController extends Controller
+class MessagesController extends BaseController
 {
     /**
      * Метод, который при создании нового объекта класса создает новую базовую вьюшку
@@ -13,9 +18,9 @@ class MessagesController extends Controller
      * 
      * @return void
      */
-    function __construct()
+    public function __construct()
     {
-        $this->__model = new MessagesModel();
+        $this->model = new MessagesModel();
     }
     
     /**
@@ -24,11 +29,11 @@ class MessagesController extends Controller
      * 
      * @return void
      */
-    function getMessagesListAction()
+    public function getMessagesListAction()
     {        
-        $data = $this->__model->getData();
-        $this->__view = new View();
-        $this->__view->generate('../views/MessagesView.php', '../../index.php', $data);
+        $data = $this->model->getData();
+        $this->view = new View();
+        $this->view->generate('../views/MessagesView.php', '../../index.php', $data);
     }
 
     /**
@@ -37,9 +42,9 @@ class MessagesController extends Controller
      * 
      * @return void
      */
-    function insertMessageAction()
+    public function insertMessageAction()
     {
-        $result = $this->__model->insertData();
+        $result = $this->model->insertData();
         echo $result;
     }
 }

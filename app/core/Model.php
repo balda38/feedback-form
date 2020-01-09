@@ -1,18 +1,20 @@
 <?php
 
+namespace App\Core;
+
 /** 
  * Базовый класс отвечающий за взаимодействие с данными на сервере.
  */
 class Model
 {
-    private $__conn;
+    protected $conn;
 
     /**
      * Базовый метод для получения данных.
      * 
      * @return void
      */
-    function getData()
+    protected function getData()
     {
         
     }
@@ -22,7 +24,7 @@ class Model
      * 
      * @return void
      */
-    function insertData()
+    protected function insertData()
     {
 
     }

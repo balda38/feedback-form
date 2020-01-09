@@ -1,5 +1,8 @@
 <?php
 
+namespace App\Core;
+use \PDO;
+
 /**
  * Класс отвечающий за подключение к БД MySQL посредством PDO.
  */
@@ -40,7 +43,7 @@ class Connection
      * 
      * @return void
      */
-    function closeConnection()
+    public function closeConnection()
     {
         $__pdo = null;
     }
