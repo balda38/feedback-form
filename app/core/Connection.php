@@ -1,18 +1,21 @@
 <?php
 
+namespace App\Core;
+use \PDO;
+
 /**
  * Класс отвечающий за подключение к БД MySQL посредством PDO.
  */
 class Connection
 {
-    private static $__pdo;
+    public static $pdo;
 
     /**
      * Метод, отвечающий за подключение к БД посредством PDO.
      *
      * @return объект PDO с подключением к БД.
      */
-    public function connect()
+    public function __construct()
     {
         $host = '127.0.0.1'; 
         $database = 'test_db'; 
@@ -27,21 +30,9 @@ class Connection
         ];
 
         try {
-            $__pdo = new PDO($dsn, $user, $password, $opt);
+            self::$pdo = new PDO($dsn, $user, $password, $opt);
         } catch (PDOException $e) {
             echo 'Не удалось подключиться к серверу: ' . $e->getMessage();
         }
-
-        return $__pdo;
-    }
-
-    /**
-     * Метод, закрывающий подключение с БД.
-     * 
-     * @return void
-     */
-    function closeConnection()
-    {
-        $__pdo = null;
     }
 }

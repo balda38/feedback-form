@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Core;
+
 /** 
  * Базовый класс отвечающий за отрисовку вьюшки.
  */
@@ -15,7 +17,7 @@ class View
      * 
      * @return void
      */
-    function generate($content_view, $template_view, $data)
+    public function generate($content_view, $template_view, $data)
     {
         include_once 'app/views/'.$content_view;
     }

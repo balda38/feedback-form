@@ -1,15 +1,20 @@
 <?php
 
+namespace App;
+use App\Core\Route;
+use App\Core\Connection;
+
 /**
  * Скрипт отвечающий за подключение отдельных файлов MVC-компонентов, 
  * а так же файла-класса для подключения к БД MySQL.  
  */
 
-require_once 'core/Connection.php';
-require_once 'core/Model.php';
-require_once 'core/View.php';
-require_once 'core/Controller.php';
-require_once 'core/Route.php';
+spl_autoload_register(
+    function ($class_name) {
+        include $class_name.'.php';
+    }
+);
 
-Route::start();
+$connection = new Connection();
+$router = new Route();
     
