@@ -9,50 +9,56 @@
 var user_name;
 var user_email;
 var user_message;
-var date = new Date();
+var date;
 
 $( document ).ready(function () {
   $('#submit_button').click(
     function(){
       user_name = document.getElementById('name').value;
-	  user_email = document.getElementById('email').value;
-	  user_message = document.getElementById('new_message').value;				
+	    user_email = document.getElementById('email').value;
+      user_message = document.getElementById('new_message').value;				
+      date = new Date();
 	
-	  var dateOptions = {
-	    year: 'numeric',
-		month: 'long',
-		day: 'numeric'
-	  };
+	    var dateOptions = {
+	      year: 'numeric',
+		    month: 'long',
+		    day: 'numeric'
+	    };
 	
-	  date = date.toLocaleString('ru', dateOptions);
+      date = date.toLocaleString('ru', dateOptions);
 
-	  sendAjaxForm('messages', 'send_message_form', 'app/Messages/insertMessage');
-	  return false; 
-	}
+	    sendAjaxForm('send_message_form', 'app/Messages/insertMessage');
+	    return false; 
+	  }
   );
 });
 
-function sendAjaxForm(messages, send_message_form, url) {
+function sendAjaxForm(send_message_form, url) {
   $.ajax({
     url: url, 
-	type: 'POST', 
-	dataType: 'text', 
-	data: $('#'+send_message_form).serialize(),  
+	  type: 'POST', 
+	  dataType: 'text', 
+	  data: $('#'+send_message_form).serialize(),  
 	
-	success: function (response) { 
-	  let result = $.parseJSON(response);
+	  success: function (response) {       
+      let result = $.parseJSON(response);
 
-	  if (result.correctData) {								
-		updateMessagesList();
-		zeroingFields();
+	    if (result.correctClientName) {		
+        if (result.correctClientEmail) {
+          updateMessagesList();
+          zeroingFields();
+        } else {
+          window.alert('E-mail введен некорректно. Введите e-mail по типу: "example@mail.ru".\n'
+                      + 'Так же в поле не должно содержаться специальных символов, кроме дефиса и нижнего подчеркивания');
+        }
+	    } else {
+        window.alert('Имя введено некорректно. Введите имя по типу: "Сергеев Сергей Сергеевич".\n'
+                    + 'Так же в поле не должно содержаться каких-либо специальных символов, кроме дефиса.');
+	    }        	
+	  },
+	  error: function (response) { 
+	    window.alert('Ошибка. Данные не отправлены.');
 	  }
-	  else {
-		window.alert('Данные введены некорректно.');
-	  }        	
-	},
-	error: function (response) { 
-	  window.alert('Ошибка. Данные не отправлены.');
-	}
   });
 };
 

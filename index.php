@@ -12,4 +12,4 @@
  * PHP version: 7.3
  */
 
-require_once "app/main.php";
+require_once 'vendor/autoload.php';

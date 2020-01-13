@@ -1,46 +1,33 @@
 <?php
 
+namespace App\Models;
+use App\Core\Model as BaseModel;
+
 /** 
  * Класс, отвечающий за взаимодействие с данными из таблицы messages БД.
  * Наследуется от базового класса Model.
  */
-class MessagesModel extends Model
+class MessagesModel extends BaseModel
 {
-    /**
-     * При создании нового объекта класса устанавливает новое подключение.
-     * 
-     * @return void
-     */
-    function __construct()
-    {
-        $this->__conn = new Connection();
-    }
-
     /**
      * Метод, получающий данные из БД посредством SQL-запроса.
      * 
      * @return PDOStatement - результат выборки по запросу.
      */
-    function getData()
+    public function getData()
     {
-        $pdo = $this->__conn->connect();
-
-        $stmt = $pdo->query('SELECT * FROM messages ORDER BY id DESC');    
-        
-        $pdo = $this->__conn->closeConnection();
-        
+        $stmt = self::$conn->query('SELECT * FROM messages ORDER BY id DESC');         
+                
         return $stmt;                   
     }
 
     /**
      * Метод для вставки данных из полей формы в БД посредством SQL-запроса
      * 
-     * @return bool - указатель правильности введенных данных.
+     * @return JSON, содержащий указатели правильности ввода имени и email.
      */
-    function insertData()
+    public function insertData()
     {
-        $pdo = $this->__conn->connect();
-
         $messageParams = array(
             'name' => htmlspecialchars($_POST["user_name"]),
             'email' => htmlspecialchars($_POST["email"]),
@@ -48,21 +35,15 @@ class MessagesModel extends Model
             'date' => date("Y-m-d"),
         );
     
-        $stmt = $pdo->prepare(
+        $stmt = self::$conn->prepare(
             'CALL check_inserted_data(:name, :email, :message, :date, @proc_out)'
         ); 
         
         $stmt->execute($messageParams);    
     
-        $stmt1 = $pdo->query('SELECT @proc_out as correct_data'); 
+        $stmt1 = self::$conn->query('SELECT @proc_out as correct_data'); 
         $row = $stmt1->fetch();     
 
-        $json = array(
-            'correctData' => $row['correct_data']
-        );
-        
-        $pdo = $this->__conn->closeConnection();
-
-        return json_encode($json);
+        return $row['correct_data'];
     }
 }
